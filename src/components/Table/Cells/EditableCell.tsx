@@ -17,8 +17,8 @@ export const EditableCell = <DataType extends object = {}>({
     <input
       className="editable_input"
       defaultValue={cell.value}
-      onChange={() => {
-        setNewCellValue(cell.value);
+      onChange={(event) => {
+        setNewCellValue(event.target.value);
       }}
       onBlur={() => {
         console.log(cell);

@@ -1,29 +1,28 @@
 import React, { useState } from "react";
 import { Cell } from "react-table";
+import "./style.css";
 
 type Props<DataType extends object = {}> = {
   cell: Cell<DataType>;
-  updatedData: (
-    rowIndex: number,
-    columnIndex: number,
-    newValue: string
-  ) => void;
+  updateData: (rowIndex: number, columnId: string, newValue: string) => void;
 };
 
 export const EditableCell = <DataType extends object = {}>({
   cell,
-  updatedData,
+  updateData,
 }: Props<DataType>) => {
   const [newCellValue, setNewCellValue] = useState<string>(cell.value);
 
   return (
     <input
-      value={cell.value}
+      className="editable_input"
+      defaultValue={cell.value}
       onChange={() => {
         setNewCellValue(cell.value);
       }}
       onBlur={() => {
-        updatedData(cell.row.index, cell.column.index, newCellValue);
+        console.log(cell);
+        updateData(cell.row.index, cell.column.id, newCellValue);
       }}
     />
   );

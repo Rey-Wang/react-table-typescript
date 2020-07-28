@@ -6,17 +6,18 @@ import { EditableCell } from "./Cells/EditableCell";
 type Props<DataType extends object = any> = {
   columns: Column<DataType>[];
   data: DataType[];
+  updateData: (rowIndex: number, columnId: string, newValue: string) => void;
 };
 
 export const Table = <DataType extends object = any>({
   columns,
   data,
+  updateData,
 }: Props<DataType>) => {
   const tableInstance = useTable(
     { columns, data, disableSortRemove: true },
     useSortBy
   );
-
   const {
     getTableProps,
     getTableBodyProps,
@@ -28,14 +29,7 @@ export const Table = <DataType extends object = any>({
   const getCell = (cell: Cell<DataType>) => {
     switch (cell.column.cellType) {
       case "EDITABLE":
-        return (
-          <EditableCell
-            cell={cell}
-            updatedData={(a, b, c) => {
-              console.log(a, b, c);
-            }}
-          />
-        );
+        return <EditableCell cell={cell} updateData={updateData} />;
       default:
         return "Cell";
     }
@@ -64,8 +58,8 @@ export const Table = <DataType extends object = any>({
             <tr {...row.getRowProps()}>
               {row.cells.map((cell) => {
                 return (
-                  <td {...cell.getCellProps()} onClick={}>
-                    {getCell(cell)}
+                  <td {...cell.getCellProps()} onClick={() => {}}>
+                    {cell.render(getCell(cell) as any)}
                   </td>
                 );
               })}
